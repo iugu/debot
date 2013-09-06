@@ -63,7 +63,7 @@ app.get '/deploy', (req,res) ->
       res.json
         success: true
       setTimeout( ->
-        deploy_script.execute params,  (error) ->
+        deploy_script.execute params,  (error,execution_log) ->
           if error
             hipchat.postMessage
               room: channel_name
@@ -74,7 +74,7 @@ app.get '/deploy', (req,res) ->
             hipchat.postMessage
               room: channel_name
               from: debot_name
-              message: 'Deployment of ' + req.query.what + ' finished'
+              message: 'Deployment of ' + req.query.what + ' finished. ' + "\r\n\r\n" + execution_log
               color: 'green'
         
           deploying[ what ] = false

@@ -12,7 +12,8 @@
     "async" : "*",
     "underscore" : "*",
     "express": "3.x",
-    "node-hipchat": "*"
+    "node-hipchat": "*",
+    "temp": "*"
   },
   "devDependencies" : {
   }
