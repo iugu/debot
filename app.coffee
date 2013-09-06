@@ -62,21 +62,23 @@ app.get '/deploy', (req,res) ->
     if deploy_script
       res.json
         success: true
-      deploy_script.execute params,  (error) ->
-        if error
-          hipchat.postMessage
-            room: channel_name
-            from: debot_name
-            message: 'Error deploying ' + req.query.what + '. ' + error
-            color: 'red'
-        else
-          hipchat.postMessage
-            room: channel_name
-            from: debot_name
-            message: 'Deployment of ' + req.query.what + ' finished'
-            color: 'green'
-      
-        deploying[ what ] = false
+      setTimeout( ->
+        deploy_script.execute params,  (error) ->
+          if error
+            hipchat.postMessage
+              room: channel_name
+              from: debot_name
+              message: 'Error deploying ' + req.query.what + '. ' + error
+              color: 'red'
+          else
+            hipchat.postMessage
+              room: channel_name
+              from: debot_name
+              message: 'Deployment of ' + req.query.what + ' finished'
+              color: 'green'
+        
+          deploying[ what ] = false
+      , 500)
       delete require.cache[require.resolve("./scripts/" + req.query.what + ".coffee")]
   else
     deploying[ what ] = false
