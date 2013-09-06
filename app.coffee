@@ -54,6 +54,7 @@ app.get '/deploy', (req,res) ->
           from: debot_name
           message: 'No deployment script for ' + req.query.what
           color: 'red'
+        deploying[ what ] = false
         res.json
           error: true
       , 500)
