@@ -48,13 +48,15 @@ app.get '/deploy', (req,res) ->
     try
       deploy_script = new (require "./scripts/" + req.query.what + ".coffee")()
     catch error
-      hipchat.postMessage
-        room: channel_name
-        from: debot_name
-        message: 'No deployment script for ' + req.query.what
-        color: 'red'
-      res.json
-        error: true
+      setTimeout( ->
+        hipchat.postMessage
+          room: channel_name
+          from: debot_name
+          message: 'No deployment script for ' + req.query.what
+          color: 'red'
+        res.json
+          error: true
+      , 500)
 
     if deploy_script
       res.json
